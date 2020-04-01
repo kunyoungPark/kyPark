@@ -1,0 +1,40 @@
+CREATE TABLE User (
+    UserName VARCHAR UNIQUE
+                     NOT NULL,
+    ID       VARCHAR PRIMARY KEY
+                     UNIQUE
+                     NOT NULL,
+    PW       VARCHAR NOT NULL,
+    Auth     INTEGER NOT NULL
+                     DEFAULT (0),
+    Idol     VARCHAR REFERENCES Idol (Name) 
+);
+
+CREATE TABLE Idol (
+    Name VARCHAR PRIMARY KEY
+               UNIQUE
+               NOT NULL
+);
+
+CREATE TABLE Posts (
+    ID      VARCHAR  PRIMARY KEY
+                     UNIQUE
+                     NOT NULL,
+    Title   VARCHAR  DEFAULT 제목없음,
+    Image   BIGINT,
+    LikeCnt INTEGER  DEFAULT (0),
+    Stamp   DATETIME NOT NULL,
+    Writer  VARCHAR  REFERENCES User (UserName) ON DELETE NO ACTION
+                                                ON UPDATE NO ACTION
+);
+
+CREATE TABLE Comment (
+    ID      VARCHAR PRIMARY KEY
+                    UNIQUE
+                    NOT NULL,
+    PostID  VARCHAR REFERENCES Posts (ID) 
+                    NOT NULL,
+    UserID  VARCHAR REFERENCES User (ID) 
+                    NOT NULL,
+    Content TEXT    NOT NULL
+);
